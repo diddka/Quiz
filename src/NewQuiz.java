@@ -75,9 +75,9 @@ public class NewQuiz {
         System.out.println(result);
         boolean gameOver = true;
         int score = 0;
-        String shuffleQuestion = String.valueOf(shuffleQuestion(chosenCategory));
-        System.out.println(shuffleQuestion);
+
         do {
+            System.out.println(shuffleQuestion(chosenCategory));
             answer = sc.nextLine();
             if (result.toLowerCase().contains(answer.toLowerCase())) {
                 score++;
