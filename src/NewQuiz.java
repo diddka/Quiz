@@ -38,14 +38,11 @@ public class NewQuiz {
         String question = "";
         String[] answers = new String[4];
 
-
         for (int i = 0; i < 5; i++) {
             if (i == 0) {
                 question = chosenCategory[0][i];
-
             } else {
                 answers[i - 1] = chosenCategory[0][i];
-
             }
         }
         List<String> answersToList = Arrays.asList(answers);
@@ -61,7 +58,6 @@ public class NewQuiz {
         askQuestion.toString();
 
         return askQuestion;
-
     }
 
 
@@ -73,7 +69,7 @@ public class NewQuiz {
         StringBuilder rightAnswers = new StringBuilder();
         String answer;
         for (int i = 0; i < chosenCategory[0].length; i++) {
-            rightAnswers.append(chosenCategory[i][1]);
+            rightAnswers.append(chosenCategory[i][1]);       //take right answer
         }
         String result = rightAnswers.toString();
         System.out.println(result);
@@ -81,17 +77,19 @@ public class NewQuiz {
         int score = 0;
         String shuffleQuestion = String.valueOf(shuffleQuestion(chosenCategory));
         System.out.println(shuffleQuestion);
-        answer = sc.nextLine();
-        if (result.toLowerCase().contains(answer.toLowerCase())){
-            score++;
-            System.out.println("You guess right.  Score: " + score + "/5");
-        }else{
-            gameOver = false;
-            System.out.println("Wrong answer. Your score:" + score + "/5");
-        }
-        if(!gameOver){
-            System.out.println("Game over.\nYour score: " + score + "/5");
-        }
+        do {
+            answer = sc.nextLine();
+            if (result.toLowerCase().contains(answer.toLowerCase())) {
+                score++;
+                System.out.println("You guess right.  Score: " + score + "/5");
+            } else {
+                gameOver = false;
+                System.out.println("Wrong answer. Your score:" + score + "/5");
+            }
+            if (!gameOver) {
+                System.out.println("Game over.\nYour score: " + score + "/5");
+            }
+        }while (gameOver);
 
 
     }
