@@ -67,29 +67,34 @@ public class NewQuiz {
         String choice = sc.nextLine();
         String[][] chosenCategory = readKategory(choice);
         StringBuilder rightAnswers = new StringBuilder();
-        String answer;
+
         for (int i = 0; i < chosenCategory[0].length; i++) {
             rightAnswers.append(chosenCategory[i][1]);       //take right answer
         }
         String result = rightAnswers.toString();
         System.out.println(result);
-        boolean gameOver = true;
-        int score = 0;
 
-        do {
-            System.out.println(shuffleQuestion(chosenCategory));
+        int score = 0;
+        String answer;
+        for (int i = 0; i < chosenCategory.length ; i++) {
+            for (int j = 0; j < chosenCategory[0].length; j++) {
+                System.out.println(chosenCategory[i][j]);
+            }
             answer = sc.nextLine();
             if (result.toLowerCase().contains(answer.toLowerCase())) {
                 score++;
                 System.out.println("You guess right.  Score: " + score + "/5");
             } else {
-                gameOver = false;
-                System.out.println("Wrong answer. Your score:" + score + "/5");
+
+                System.out.println("Wrong answer.\n Game over.\nYour score:" + score + "/5");
+                break;
             }
-            if (!gameOver) {
-                System.out.println("Game over.\nYour score: " + score + "/5");
+            if (score==5) {
+                System.out.println("Game over.\nYou win!!!");
+                break;
             }
-        }while (gameOver);
+
+        }
 
 
     }
