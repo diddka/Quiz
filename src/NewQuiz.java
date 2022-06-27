@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class NewQuiz {
-    public static String[][] readCategory(String choice) {
+    public static String[][] readCategory(String choice) {    //read csv file
         String fileLocation = "";
         if (choice.equalsIgnoreCase("capitals")) {
             fileLocation = "src\\capitals.csv";
@@ -32,58 +32,56 @@ public class NewQuiz {
     }
 
     public static void shuffleQuestion(String[][] chosenCategory) {
-        List<String[]> asList = Arrays.asList(chosenCategory);
-        Collections.shuffle(asList);
-        chosenCategory = asList.toArray(new String[0][0]);
+        List<String[]> asList = Arrays.asList(chosenCategory);    //turn array to list to get shuffled
+        Collections.shuffle(asList);                              //  shuffle the list of questions
+        chosenCategory = asList.toArray(new String[0][0]);        //  return list to array
         shuffleAnswers(chosenCategory);
     }
+
     public static void shuffleAnswers(String[][] chosenCategory) {
         String question = "";
         String[] answers = new String[4];
-        for (int j = 0; j < 5; j++) {
-            for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < chosenCategory.length; j++) {
+            for (int i = 0; i < chosenCategory[0].length; i++) {
                 if (i == 0) {
-                    question = chosenCategory[j][0];
+                    question = chosenCategory[j][0];             //remove questions from array
                 } else {
-                    answers[i - 1] = chosenCategory[j][i];
+                    answers[i - 1] = chosenCategory[j][i];       //take aswers to new 1d array
                 }
             }
-            List<String> answersToList = Arrays.asList(answers);
-            Collections.shuffle(answersToList);
+            List<String> answersToList = Arrays.asList(answers);// array answers to list
+            Collections.shuffle(answersToList);                 //shuffle the answers
 
-            StringBuilder askQuestion = new StringBuilder();
-            askQuestion.append(question).append("\n");
-            int numeric = 1;
-            for (String answer : answersToList) {
-                askQuestion.append(numeric).append(".").append(answer).append("\n");
-                chosenCategory[j][numeric] = answer;
-                String.valueOf(numeric++);
+            int count = 1;
+            for (String answer : answersToList) {               //return shuffled answers into array
+                StringBuilder askQuestion = new StringBuilder();
+                askQuestion.append(count).append(".").append(answer);  //numeric the answers
+                askQuestion.toString();
+                chosenCategory[j][count] = String.valueOf(askQuestion); //return shuffle and numeric answers to 2d array
+                String.valueOf(count++);
             }
-            for (int k = 0; k < chosenCategory.length; k++) {
-                System.out.println(chosenCategory[j][k]);
-            }
-            askQuestion.toString();
-
         }
     }
 
+    public static String findRightAnswers(String[][] chosenCategory) {
+        StringBuilder rightAnswers = new StringBuilder();
+        for (int i = 0; i < chosenCategory[0].length; i++) {
+            rightAnswers.append(chosenCategory[i][1]);
+        }
+        return rightAnswers.toString();
+    }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Choose category of questions: \"Capitals\" or \"Funny\"");
         String choice = sc.nextLine();
         String[][] chosenCategory = readCategory(choice);
-
-        StringBuilder rightAnswers = new StringBuilder();
-        for (int i = 0; i < chosenCategory[0].length; i++) {
-            rightAnswers.append(chosenCategory[i][1]);       //take right answer
-        }
-        String result = rightAnswers.toString();
-        //System.out.println(result);
+        String result = findRightAnswers(chosenCategory);
+        shuffleQuestion(chosenCategory);
 
         int score = 0;
         String answer;
-        for (int i = 0; i < chosenCategory.length ; i++) {
+        for (int i = 0; i < chosenCategory.length; i++) {
             for (int j = 0; j < chosenCategory[0].length; j++) {
                 System.out.println(chosenCategory[i][j]);
             }
@@ -96,13 +94,10 @@ public class NewQuiz {
                 System.out.println("Wrong answer.\n Game over.\nYour score:" + score + "/5");
                 break;
             }
-            if (score==5) {
+            if (score == 5) {
                 System.out.println("Game over.\nYou win!!!");
                 break;
             }
-
         }
-
-
     }
 }
