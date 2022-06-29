@@ -7,16 +7,23 @@ import java.util.List;
 import java.util.Scanner;
 
 public class NewQuiz {
-    public static String[][] readCategory(String choice) {    //read csv file
+    public static void checkEntry(String check) {
+        if (!check.equalsIgnoreCase("capitals") && !check.equalsIgnoreCase("funny question")) {
+            System.out.println("Wrong input");
+            main(null);
+        }
+    }
+
+    public static String[][] readCategory(String choice) {    //read chosen csv file
         String fileLocation = "";
         if (choice.equalsIgnoreCase("capitals")) {
             fileLocation = "src\\capitals.csv";
-        } else if (choice.equalsIgnoreCase("funny")) {
+        } else if (choice.equalsIgnoreCase("funny question")) {
             fileLocation = "src\\funnyQuestions.csv";
         }
         String line;
         String[] value;
-        String[][] file = new String[5][5];
+        String[][] file = new String[8][5];
         int rows = 0;
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileLocation));
@@ -49,11 +56,11 @@ public class NewQuiz {
                     answers[i - 1] = chosenCategory[j][i];       //take aswers to new 1d array
                 }
             }
-            List<String> answersToList = Arrays.asList(answers);// array answers to list
+            List<String> answersToList = Arrays.asList(answers);
             Collections.shuffle(answersToList);                 //shuffle the answers
 
             int count = 1;
-            for (String answer : answersToList) {               //return shuffled answers into array
+            for (String answer : answersToList) {
                 StringBuilder askQuestion = new StringBuilder();
                 askQuestion.append(count).append(".").append(answer);  //numeric the answers
                 askQuestion.toString();
@@ -65,7 +72,7 @@ public class NewQuiz {
 
     public static String findRightAnswers(String[][] chosenCategory) {
         StringBuilder rightAnswers = new StringBuilder();
-        for (int i = 0; i < chosenCategory[0].length; i++) {
+        for (int i = 0; i < chosenCategory.length; i++) {
             rightAnswers.append(chosenCategory[i][1]);
         }
         return rightAnswers.toString();
@@ -73,10 +80,11 @@ public class NewQuiz {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Choose category of questions: \"Capitals\" or \"Funny\"");
+        System.out.println("Choose category of questions: \"Capitals\" or \"Funny question\"");
         String choice = sc.nextLine();
+        checkEntry(choice);
         String[][] chosenCategory = readCategory(choice);
-        String result = findRightAnswers(chosenCategory);
+        String rightAnswer = findRightAnswers(chosenCategory);
         shuffleQuestion(chosenCategory);
 
         int score = 0;
@@ -86,15 +94,15 @@ public class NewQuiz {
                 System.out.println(chosenCategory[i][j]);
             }
             answer = sc.nextLine();
-            if (result.toLowerCase().contains(answer.toLowerCase())) {
+            if (rightAnswer.toLowerCase().contains(answer.toLowerCase())) {
                 score++;
-                System.out.println("You guess right.  Score: " + score + "/5");
+                System.out.println("You guess right.  Score: " + score + "/8\n");
             } else {
-
-                System.out.println("Wrong answer.\n Game over.\nYour score:" + score + "/5");
+                System.out.println("Wrong answer.\nGame over.\nYour score:" + score + "/8");
+                System.out.println("You played category: " + choice.toUpperCase());
                 break;
             }
-            if (score == 5) {
+            if (score == 8) {
                 System.out.println("Game over.\nYou win!!!");
                 break;
             }
